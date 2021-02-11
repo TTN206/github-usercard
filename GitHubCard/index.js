@@ -19,7 +19,14 @@ console.log( api );
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
-
+axios
+  .get("https://api.github.com/users/TTN206")
+  .then(( res ) => {
+    console.log( res.data, "dis is the response")
+  })
+  .catch(( err ) => {
+    console.log( err, "dis is an error")
+  });
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -30,8 +37,14 @@ console.log( api );
     Using that array, iterate over it, requesting data for each user, creating a new card for each
     user, and adding that card to the DOM.
 */
-
-const followersArray = [];
+// use the list from the bottom of the page
+const followersArray = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell"
+];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -54,7 +67,7 @@ const followersArray = [];
 */
 
 function githubCardMaker ({ obj }) {
-
+// variables 
   const card = document.createElement( "div" );
   const img = document.createElement( "img" );
   const cardInfo = document.createElement( "div" );
@@ -62,16 +75,40 @@ function githubCardMaker ({ obj }) {
   const pInfo = document.createElement( "p" );
   const locInfo = document.createElement( "p" );
   const profileInfo = document.createElement( "p" );
+  const address = document.createElement( "a" )
   const followersCard = document.createElement( "p" );
   const followingCard = document.createElement( "p" );
   const bioCard = document.createElement( "p" );
-  
+// classList  
   card.classList.add( "card" );
   cardInfo.classList.add( "card-info" );
   infoName.classList.add( "name" );
-  pInfo.classList.add( "username" );
+  pInfo.classList.add( "user-name" );
+// textContent
+  img.src = obj.avatar_url;
+  card.textContent = obj.UserName;
+  infoName.textContent = obj.Name;
+  locInfo.textContent = `Location: ${ obj.Location }`;
+  address.href = obj.gitURL;
+  profileInfo.textContent = `Profile: ${ address }`;
+  followersCard.textContent = `Followers: ${ obj.Fers }`;
+  followingCard.textContent = `Following: ${ obj.Fing }`;
+  bioCard.textContent = `Bio: ${ obj.Bio }`;
+// append the info
+  card.appendChild( img );
+  card.appendChild( cardInfo );
+  cardInfo.appendChild( infoName );
+  cardInfo.appendChild( locInfo );
+  cardInfo.appendChild( pInfo );
+  cardInfo.appendChild( profileInfo );
+  profileInfo.appendChild( address );
+  cardInfo.appendChild( followersCard );
+  cardInfo.appendChild( followingCard );
+  cardInfo.appendChild( bioCard );
+//  return the card:
+  return card;
 }
-
+githubCardMaker( {obj} );
 /*
   List of LS Instructors Github username's:
     tetondan
